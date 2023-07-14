@@ -1,0 +1,4 @@
+Service
+ - Catalog.API => 
+  - Http => http://localhost:5011
+  - Https => https://localhost:5021
