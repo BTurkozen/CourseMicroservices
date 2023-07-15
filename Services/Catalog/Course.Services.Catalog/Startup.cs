@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Course.Services.Catalog.Settings;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -35,6 +37,15 @@ namespace Course.Services.Catalog
 
             // Typeof içerisine Startup verdiğimiz de Assembly de olan bütün mapperları bulup ekleyecek.
             services.AddAutoMapper(typeof(Startup));
+
+            // Option Pattern uyguluyoruz.
+            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
+
+            // Değişmeyen değerler olduğu için Singleton olarak kullandık.
+            services.AddSingleton<IDatabaseSettings>(sp =>
+            {
+                return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
