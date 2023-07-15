@@ -34,7 +34,7 @@ namespace Course.Services.Catalog.Controllers
             return CreateActionResultInstance(response);
         }
 
-        [Route("/api/[controller]/[Action]/{userId}")]
+        [HttpGet("[Action]/{userId}")]
         public async Task<IActionResult> GetAllUserId(string userId)
         {
             var response = await _courseService.GetAllByUserIdAsync(userId);
