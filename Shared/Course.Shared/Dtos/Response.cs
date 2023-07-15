@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Course.Shared.Dtos
 {
-    public class ResponseDto<T>
+    public class Response<T>
     {
         /// <summary>
         /// Response içerisinde gönderilecek data.
@@ -40,9 +40,9 @@ namespace Course.Shared.Dtos
         /// <param name="data"></param>
         /// <param name="statusCode"></param>
         /// <returns></returns>
-        public static ResponseDto<T> Success(T data, int statusCode)
+        public static Response<T> Success(T data, int statusCode)
         {
-            return new ResponseDto<T> { Data = data, StatusCode = statusCode, IsSuccessful = true };
+            return new Response<T> { Data = data, StatusCode = statusCode, IsSuccessful = true };
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace Course.Shared.Dtos
         /// </summary>
         /// <param name="statusCode"></param>
         /// <returns></returns>
-        public static ResponseDto<T> Success(int statusCode)
+        public static Response<T> Success(int statusCode)
         {
-            return new ResponseDto<T> { Data = default(T), StatusCode = statusCode, IsSuccessful = true };
+            return new Response<T> { Data = default(T), StatusCode = statusCode, IsSuccessful = true };
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace Course.Shared.Dtos
         /// <param name="errors"></param>
         /// <param name="statusCode"></param>
         /// <returns></returns>
-        public static ResponseDto<T> Fail(List<string> errors, int statusCode)
+        public static Response<T> Fail(List<string> errors, int statusCode)
         {
-            return new ResponseDto<T> { StatusCode = statusCode, Errors = errors, IsSuccessful = false };
+            return new Response<T> { StatusCode = statusCode, Errors = errors, IsSuccessful = false };
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace Course.Shared.Dtos
         /// <param name="error"></param>
         /// <param name="statusCode"></param>
         /// <returns></returns>
-        public static ResponseDto<T> Fail(string error, int statusCode)
+        public static Response<T> Fail(string error, int statusCode)
         {
-            return new ResponseDto<T> { Errors = new List<string>() { error}, StatusCode = statusCode, IsSuccessful = false };
+            return new Response<T> { Errors = new List<string>() { error}, StatusCode = statusCode, IsSuccessful = false };
         }
     }
 }

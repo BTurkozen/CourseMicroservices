@@ -1,4 +1,5 @@
-﻿using Course.Services.Catalog.Settings;
+﻿using Course.Services.Catalog.Services;
+using Course.Services.Catalog.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -46,6 +47,9 @@ namespace Course.Services.Catalog
             {
                 return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
             });
+
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICourseService, CourseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
