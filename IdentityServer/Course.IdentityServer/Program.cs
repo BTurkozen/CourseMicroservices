@@ -2,7 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using Course.IdentityServer.Data;
+using Course.IdentityServer.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,23 +41,44 @@ namespace Course.IdentityServer
 
             try
             {
-                var seed = args.Contains("/seed");
-                if (seed)
-                {
-                    args = args.Except(new[] { "/seed" }).ToArray();
-                }
+                //var seed = args.Contains("/seed");
+                //if (seed)
+                //{
+                //    args = args.Except(new[] { "/seed" }).ToArray();
+                //}
 
                 var host = CreateHostBuilder(args).Build();
 
-                if (seed)
+                // Migrationların otomatik yapılmasını istiyoruz.
+                // Db yoksa oluşsun, varsa migration'lar eklenerek çalışssın.
+
+                using var scope = host.Services.CreateScope();
+
+                var serviceProvider = scope.ServiceProvider;
+
+                var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
+                dbContext.Database.Migrate();
+
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                if (!userManager.Users.Any())
                 {
-                    Log.Information("Seeding database...");
-                    var config = host.Services.GetRequiredService<IConfiguration>();
-                    var connectionString = config.GetConnectionString("DefaultConnection");
-                    SeedData.EnsureSeedData(connectionString);
-                    Log.Information("Done seeding database.");
-                    return 0;
+                    userManager.CreateAsync(new ApplicationUser() { UserName = "Bturk", Email = "Bturk@blabla.com", City = "Ankara" }, "Password_123654").Wait();
                 }
+
+
+
+
+                //if (seed)
+                //{
+                //    Log.Information("Seeding database...");
+                //    var config = host.Services.GetRequiredService<IConfiguration>();
+                //    var connectionString = config.GetConnectionString("DefaultConnection");
+                //    SeedData.EnsureSeedData(connectionString);
+                //    Log.Information("Done seeding database.");
+                //    return 0;
+                //}
 
                 Log.Information("Starting host...");
                 host.Run();
