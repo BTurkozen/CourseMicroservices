@@ -13,7 +13,7 @@ namespace Course.IdentityServer
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
             {
-                new ApiResource("resource_catalog"){Scopes = {"catalog_fullpermission" } },
+                new ApiResource("resource_catalog"){Scopes = { "catalog_fullpermission" } },
                 new ApiResource("photo_stock"){ Scopes = { "photo_stock_fullpermission" } },
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
             };
