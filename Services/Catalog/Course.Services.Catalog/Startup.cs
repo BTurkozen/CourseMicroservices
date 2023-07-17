@@ -1,5 +1,6 @@
 ﻿using Course.Services.Catalog.Services;
 using Course.Services.Catalog.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,24 @@ namespace Course.Services.Catalog
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Course.Services.Catalog", Version = "v1" });
             });
+
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        // Bu microservice kimin dağıttığı bilgisini vereceğiz.
+                        // Token Dağıtmaktan görevli arkadaş.
+                        // IdentityServer Url'lini veriyoruz.
+                        options.Authority = Configuration["IdentityServerURL"];
+
+                        // Audience Parametrelerini belirtiyoruz.
+                        // Tekdir Birden fazla belirtilemez.
+                        options.Audience = "resource_catalog";
+
+                        // Https kullanılmadığı için burada belirtiyoruz.
+                        options.RequireHttpsMetadata = false;
+
+                    });
 
             // Typeof içerisine Startup verdiğimiz de Assembly de olan bütün mapperları bulup ekleyecek.
             services.AddAutoMapper(typeof(Startup));
