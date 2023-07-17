@@ -28,6 +28,9 @@ namespace Course.IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Authentication için Controller / Action Yetkilendirme işlemi yapabilmemiz için ekliyoruz.
+            services.AddLocalApiAuthentication();
+
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -81,6 +84,7 @@ namespace Course.IdentityServer
 
             app.UseRouting();
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
