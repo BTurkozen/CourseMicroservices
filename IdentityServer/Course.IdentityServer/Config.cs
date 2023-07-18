@@ -61,6 +61,8 @@ namespace Course.IdentityServer
                 {
                     ClientName = "Asp.Net Core MVC",
                     ClientId = "WebMvcClientForUser",
+                    // OfflineAccess kullanıyoruz fakat buradan, Kullanılabilmesi için izin verilmesi gerekmektedir.
+                    AllowOfflineAccess = true,
                     ClientSecrets = { new Secret ("secret".Sha256())},
                     // Password' içerisinde bulunmaktadaır.
                     // ResourceOwnerPasswordAndClientCredentials
