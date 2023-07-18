@@ -64,7 +64,7 @@ namespace Course.IdentityServer
 
                 if (!userManager.Users.Any())
                 {
-                    userManager.CreateAsync(new ApplicationUser() { UserName = "Bturk", Email = "Bturk@blabla.com", City = "Ankara" }, "Password_123654").Wait();
+                    userManager.CreateAsync(new ApplicationUser() { UserName = "Bturk", Email = "Bturk@blabla.com", City = "Ankara" }, "Password_*").Wait();
                 }
 
 
