@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Course.IdentityServer.Services;
+using IdentityServer4.Validation;
 
 namespace Course.IdentityServer
 {
@@ -70,6 +72,8 @@ namespace Course.IdentityServer
                     options.ClientId = "copy client ID from Google here";
                     options.ClientSecret = "copy client secret from Google here";
                 });
+
+            builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
         }
 
         public void Configure(IApplicationBuilder app)
