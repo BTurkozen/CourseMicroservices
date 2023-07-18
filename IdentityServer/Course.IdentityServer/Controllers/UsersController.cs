@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using static IdentityServer4.IdentityServerConstants;
@@ -41,6 +42,26 @@ namespace Course.IdentityServer.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
+        {
+            var userIdCliam = User.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub);
+
+            if (userIdCliam is null)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.FindByIdAsync(userIdCliam.Value);
+
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new { user.Id, user.UserName, user.Email, user.City });
         }
     }
 }
