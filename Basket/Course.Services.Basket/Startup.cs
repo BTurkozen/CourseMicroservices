@@ -1,3 +1,4 @@
+﻿using Course.Services.Basket.Services;
 using Course.Services.Basket.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,22 @@ namespace Course.Services.Basket
             services.Configure<RedisSettings>(Configuration.GetSection("RedisSettings"));
 
             services.AddControllers();
-            
+
+            // Geriye redis service döndermek için içerisine girerek redis implementasyonu yapıyoruz.
+            services.AddSingleton<RedisService>(sp =>
+            {
+                // Configuration dosyalarını okuyoruz.
+                var settings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;
+
+                // Redis service oluşturuyoruz.
+                var redis = new RedisService(settings.Host, settings.Port);
+
+                // Redis'e bağlanıyor.
+                redis.Connect();
+
+                return redis;   
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Course.Services.Basket", Version = "v1" });
