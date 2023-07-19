@@ -13,7 +13,7 @@ namespace Course.Services.Catalog.Controllers
     [ApiController]
     public class PhotosController : CustomBaseController
     {
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> PhotoSave(IFormFile photoFile, CancellationToken cancellationToken)
         {
             if (photoFile is not null && photoFile.Length > 0)
@@ -34,7 +34,8 @@ namespace Course.Services.Catalog.Controllers
             return CreateActionResultInstance(Response<PhotoDto>.Fail("Photo is Empty", 400));
         }
 
-        public async Task<IActionResult> PhotoDelete(string photoURL)
+        [HttpGet]
+        public IActionResult PhotoDelete(string photoURL)
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Photos", photoURL);
 
