@@ -52,6 +52,8 @@ namespace Course.Services.Basket
                 return redis;
             });
 
+            services.AddScoped<IBasketService, BasketService>();
+
             // Identity bilgilerini alabilmek için service
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
