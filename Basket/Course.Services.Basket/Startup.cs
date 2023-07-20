@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Course.Services.Basket
 {
@@ -28,6 +29,10 @@ namespace Course.Services.Basket
         {
             // Kimliği doğrulanmış kullanıcıyı verir.
             var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+            // Identity içindeki Claim nesnelerinin Mapleme işlemini kaldırıyoruz.
+            // NameIdentifier yerine sub olarak gelmesini sağladık kendi simlendirme işlemlerini es geçmesini sağladık. 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
