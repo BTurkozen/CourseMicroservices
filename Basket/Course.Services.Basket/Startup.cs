@@ -1,10 +1,13 @@
 ﻿using Course.Services.Basket.Services;
 using Course.Services.Basket.Settings;
 using Course.Shared.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,12 +33,26 @@ namespace Course.Services.Basket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Kimliği doğrulanmış kullanıcıyı verir.
+            var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+            {
+                options.Authority = Configuration["IdentityServerURL"];
+                options.Audience = "";
+                options.RequireHttpsMetadata = true;
+            });
+
             // IHttpContextAccesor interface'ni kullanabilmek için burada eklememiz gerekmektedir.
             services.AddHttpContextAccessor();
 
             services.Configure<RedisSettings>(Configuration.GetSection("RedisSettings"));
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
+            });
 
             // Geriye redis service döndermek için içerisine girerek redis implementasyonu yapıyoruz.
             services.AddSingleton<RedisService>(sp =>
@@ -76,6 +93,8 @@ namespace Course.Services.Basket
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
