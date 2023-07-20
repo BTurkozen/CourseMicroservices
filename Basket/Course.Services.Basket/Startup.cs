@@ -1,5 +1,6 @@
 ﻿using Course.Services.Basket.Services;
 using Course.Services.Basket.Settings;
+using Course.Shared.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,9 @@ namespace Course.Services.Basket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // IHttpContextAccesor interface'ni kullanabilmek için burada eklememiz gerekmektedir.
+            services.AddHttpContextAccessor();
+
             services.Configure<RedisSettings>(Configuration.GetSection("RedisSettings"));
 
             services.AddControllers();
@@ -45,8 +49,11 @@ namespace Course.Services.Basket
                 // Redis'e bağlanıyor.
                 redis.Connect();
 
-                return redis;   
+                return redis;
             });
+
+            // Identity bilgilerini alabilmek için service
+            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
             services.AddSwaggerGen(c =>
             {
