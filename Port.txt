@@ -8,5 +8,8 @@ Service
  - Basket.API =>
   - Http => http://localhost:5013
   - Https => https://localhost:5023
+ - Discount.API =>
+  - Http => http://localhost:5014
+  - Https => https://localhost:5024
 IdentityServer
  - Https => http://localhost:5001
