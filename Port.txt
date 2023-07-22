@@ -11,5 +11,8 @@ Service
  - Discount.API =>
   - Http => http://localhost:5014
   - Https => https://localhost:5024
+ - Order.API =>
+  - Http => http://localhost:5015
+  - Https => https://localhost:5025
 IdentityServer
  - Https => http://localhost:5001
