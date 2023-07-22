@@ -48,7 +48,6 @@ namespace Course.IdentityServer
                 new ApiScope("photo_stock_fullpermission","Photo Stock Api için Tam Yetki"),
                 new ApiScope("basket_fullpermission", "Basket Api için Tam Yetki"),
                 new ApiScope("discount_fullpermission", "Discount Api için Tam Yetki"),
-                new ApiScope("discount_fullpermission", "Discount Api için Tam Yetki"),
                 //new ApiScope("discount_read", "Discount Api için Tam Yetki"),
                 //new ApiScope("discount_write", "Discount Api için Tam Yetki"),
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
