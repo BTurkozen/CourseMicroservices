@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Course.Services.Discount.Services;
+using Course.Shared.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +49,12 @@ namespace Course.Services.Discount
                         options.RequireHttpsMetadata = true;
                     });
 
+            services.AddHttpContextAccessor();
+            
+            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
+            services.AddScoped<IDiscountService, DiscountService>();
+
             services.AddControllers(options =>
             {
                 options.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
@@ -56,6 +64,7 @@ namespace Course.Services.Discount
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Course.Services.Discount", Version = "v1" });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
