@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Appli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Domain", "Services\Order\Course.Services.Order.Domain\Course.Services.Order.Domain.csproj", "{CFBF46AE-39D2-42F8-8B16-6EE58C959129}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Domain.Core", "Services\Order\Course.Services.Order.Domain.Core\Course.Services.Order.Domain.Core.csproj", "{37BFD9CB-DB40-437F-8229-B09EC4639940}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{CFBF46AE-39D2-42F8-8B16-6EE58C959129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFBF46AE-39D2-42F8-8B16-6EE58C959129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFBF46AE-39D2-42F8-8B16-6EE58C959129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37BFD9CB-DB40-437F-8229-B09EC4639940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37BFD9CB-DB40-437F-8229-B09EC4639940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37BFD9CB-DB40-437F-8229-B09EC4639940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37BFD9CB-DB40-437F-8229-B09EC4639940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{EBE3A240-31CF-4253-8FA1-017F1360511C} = {099D43DC-094B-4DDA-86CF-8FBF4EA5B329}
 		{9DD54DA6-CEB9-416F-BF08-4FD68A696B05} = {099D43DC-094B-4DDA-86CF-8FBF4EA5B329}
 		{CFBF46AE-39D2-42F8-8B16-6EE58C959129} = {099D43DC-094B-4DDA-86CF-8FBF4EA5B329}
+		{37BFD9CB-DB40-437F-8229-B09EC4639940} = {099D43DC-094B-4DDA-86CF-8FBF4EA5B329}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4CF1B10-765A-4B0B-A3AC-58E752EC890B}
