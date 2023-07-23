@@ -12,6 +12,7 @@ namespace Course.Services.Order.Domain.OrderAggregate
     // - Owned Types
     // - Shadow Property
     // - Backing Field
+
     // İsimlendirmeleri ürün olarak genel bakılarak verilmesi ileride Kurs değilde başka bir ürün satılması durumuna göre de düşünülerek yapılması.
     public class Order : Entity, IAggregateRoot
     {
