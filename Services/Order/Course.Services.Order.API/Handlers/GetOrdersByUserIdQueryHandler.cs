@@ -1,4 +1,4 @@
-﻿using Course.Services.Order.API.Querys;
+﻿using Course.Services.Order.API.Queries;
 using Course.Services.Order.Application.Dtos;
 using Course.Services.Order.Application.Mapping;
 using Course.Services.Order.Infrastructure;

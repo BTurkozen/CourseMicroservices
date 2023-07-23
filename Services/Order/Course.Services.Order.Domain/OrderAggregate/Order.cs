@@ -29,7 +29,7 @@ namespace Course.Services.Order.Domain.OrderAggregate
         private readonly List<OrderItem> _orderItems;
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
-        public Order(Address address, string buyerId)
+        public Order(string buyerId, Address address)
         {
             _orderItems = new List<OrderItem>();
             CreatedDate = DateTime.Now;
@@ -52,7 +52,7 @@ namespace Course.Services.Order.Domain.OrderAggregate
             if (existProduct is false)
             {
                 var newOrderItem = new OrderItem(productId, productName, pictureUrl, price);
-                
+
                 _orderItems.Add(newOrderItem);
             }
         }
@@ -60,6 +60,6 @@ namespace Course.Services.Order.Domain.OrderAggregate
         /// <summary>
         /// Sipariş için Toplam datayı dönüyoruz.
         /// </summary>
-        public decimal GetTotalPrice=> _orderItems.Sum(oi => oi.Price);
+        public decimal GetTotalPrice => _orderItems.Sum(oi => oi.Price);
     }
 }
