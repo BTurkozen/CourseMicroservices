@@ -18,6 +18,7 @@ namespace Course.IdentityServer
                 new ApiResource("resource_photo_stock"){ Scopes = { "photo_stock_fullpermission" } },
                 new ApiResource("resource_basket") { Scopes = {"basket_fullpermission"} },
                 new ApiResource("resource_discount"){Scopes = {"discount_fullpermission"} },
+                new ApiResource("resource_order"){Scopes = {"order_fullpermission"} },
                 // Yetkilendirmeyi bu şekilde de çoklu ve bölünmüş olarak verilebilmektedir.
                 //new ApiResource("resource_discount"){Scopes = {"discount_fullpermission, discount_read,discount_write"} },
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
@@ -48,6 +49,7 @@ namespace Course.IdentityServer
                 new ApiScope("photo_stock_fullpermission","Photo Stock Api için Tam Yetki"),
                 new ApiScope("basket_fullpermission", "Basket Api için Tam Yetki"),
                 new ApiScope("discount_fullpermission", "Discount Api için Tam Yetki"),
+                new ApiScope("order_fullpermission", "Order Api için Tam Yetki"),
                 //new ApiScope("discount_read", "Discount Api için Tam Yetki"),
                 //new ApiScope("discount_write", "Discount Api için Tam Yetki"),
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
@@ -78,7 +80,7 @@ namespace Course.IdentityServer
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     // Burada hangi izinlere müsade edeceğimiz kısmını dolduruyoruz.
                     // IdentityServerConstants.StandardScopes.OfflineAccess Refresh token için eklenmektedir. Kullanıcı offline olsa dahi kullanıcı adına yeni bir token alabiliriz istek atabiliriz. Burada elimizde refresh token olmadığı zaman Kullanıcıdan Email ve Password almak zorunda olmamak için buna ihtiyaç duyuyoruz.
-                    AllowedScopes = { "basket_fullpermission", "discount_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess,"roles",IdentityServerConstants.LocalApi.ScopeName },
+                    AllowedScopes = { "basket_fullpermission", "discount_fullpermission", "order_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess,"roles",IdentityServerConstants.LocalApi.ScopeName },
                      // Access Token süresini belirliyoruz. 1 saat olarak ayarlıyoruz.
                      AccessTokenLifetime = 1*60*60,
                      // Refresh Token süresini belirliyoruz.
