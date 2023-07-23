@@ -14,5 +14,8 @@ Service
  - Order.API =>
   - Http => http://localhost:5015
   - Https => https://localhost:5025
+ - FakePayment.API =>
+  - Http => http://localhost:5016
+  - Https => https://localhost:5026
 IdentityServer
  - Https => http://localhost:5001
