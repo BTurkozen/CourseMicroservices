@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\..\..\Shared\Course.Shared\Course.Shared.csproj" />
   </ItemGroup>
 
 </Project>
