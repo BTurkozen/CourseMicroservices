@@ -1,4 +1,6 @@
-using Course.Services.Order.Infrastructure;
+﻿using Course.Services.Order.Infrastructure;
+using Course.Shared.Services;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,7 +38,16 @@ namespace Course.Services.Order.API
                 });
             });
 
+            // MediatR ile ilgili handlerları belirtmemiz gerekmektedir.
+            // Handler class'ının assembly'si alıyoruz.
+            services.AddMediatR(typeof(Application.Handlers.CreateOrderCommandHandler).Assembly);
+
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Course.Services.Order.API", Version = "v1" });

@@ -1,4 +1,4 @@
-﻿using Course.Services.Order.API.Commands;
+﻿using Course.Services.Order.Application.Commands;
 using Course.Services.Order.Application.Dtos;
 using Course.Services.Order.Domain.OrderAggregate;
 using Course.Services.Order.Infrastructure;
@@ -7,7 +7,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Course.Services.Order.API.Handlers
+namespace Course.Services.Order.Application.Handlers
 {
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Response<CreatedOrderDto>>
     {

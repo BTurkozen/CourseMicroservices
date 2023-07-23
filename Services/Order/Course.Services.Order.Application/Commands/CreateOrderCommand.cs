@@ -3,7 +3,7 @@ using Course.Shared.Dtos;
 using MediatR;
 using System.Collections.Generic;
 
-namespace Course.Services.Order.API.Commands
+namespace Course.Services.Order.Application.Commands
 {
     public class CreateOrderCommand : IRequest<Response<CreatedOrderDto>>
     {

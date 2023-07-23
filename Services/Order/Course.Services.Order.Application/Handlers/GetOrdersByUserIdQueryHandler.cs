@@ -1,4 +1,4 @@
-﻿using Course.Services.Order.API.Queries;
+﻿using Course.Services.Order.Application.Queries;
 using Course.Services.Order.Application.Dtos;
 using Course.Services.Order.Application.Mapping;
 using Course.Services.Order.Infrastructure;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Course.Services.Order.API.Handlers
+namespace Course.Services.Order.Application.Handlers
 {
     public class GetOrdersByUserIdQueryHandler : IRequestHandler<GetOrdersByUserIdQuery, Response<List<OrderDto>>>
     {
