@@ -36,15 +36,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course.Services.Basket", "S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{099D43DC-094B-4DDA-86CF-8FBF4EA5B329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.API", "Services\Order\Course.Services.Order.API\Course.Services.Order.API.csproj", "{EBE3A240-31CF-4253-8FA1-017F1360511C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course.Services.Order.API", "Services\Order\Course.Services.Order.API\Course.Services.Order.API.csproj", "{EBE3A240-31CF-4253-8FA1-017F1360511C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Application", "Services\Order\Course.Services.Order.Application\Course.Services.Order.Application.csproj", "{9DD54DA6-CEB9-416F-BF08-4FD68A696B05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course.Services.Order.Application", "Services\Order\Course.Services.Order.Application\Course.Services.Order.Application.csproj", "{9DD54DA6-CEB9-416F-BF08-4FD68A696B05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Domain", "Services\Order\Course.Services.Order.Domain\Course.Services.Order.Domain.csproj", "{CFBF46AE-39D2-42F8-8B16-6EE58C959129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course.Services.Order.Domain", "Services\Order\Course.Services.Order.Domain\Course.Services.Order.Domain.csproj", "{CFBF46AE-39D2-42F8-8B16-6EE58C959129}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Domain.Core", "Services\Order\Course.Services.Order.Domain.Core\Course.Services.Order.Domain.Core.csproj", "{37BFD9CB-DB40-437F-8229-B09EC4639940}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course.Services.Order.Domain.Core", "Services\Order\Course.Services.Order.Domain.Core\Course.Services.Order.Domain.Core.csproj", "{37BFD9CB-DB40-437F-8229-B09EC4639940}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course.Services.Order.Infrastructure", "Services\Order\Course.Services.Order.Infrastructure\Course.Services.Order.Infrastructure.csproj", "{A71CB211-8827-4C68-A03B-E781ECD0C399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Course.Services.Order.Infrastructure", "Services\Order\Course.Services.Order.Infrastructure\Course.Services.Order.Infrastructure.csproj", "{A71CB211-8827-4C68-A03B-E781ECD0C399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
