@@ -29,6 +29,11 @@ namespace Course.Services.Order.Domain.OrderAggregate
         private readonly List<OrderItem> _orderItems;
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
+        // Parametreli Order yazıldığı için migration tarafında default bir constructor dahaistemektedir. O yüzden boş contructor oluşturduk.
+        public Order()
+        {
+        }
+
         public Order(string buyerId, Address address)
         {
             _orderItems = new List<OrderItem>();
