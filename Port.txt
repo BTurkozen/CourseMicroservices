@@ -1,3 +1,5 @@
+MVC Web
+ - Http => http://localhost:5010
 Service
  - Catalog.API => 
   - Http => http://localhost:5011
