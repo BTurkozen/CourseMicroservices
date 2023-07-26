@@ -25,6 +25,8 @@ namespace Course.Web
         {
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
+            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
+
             services.AddControllersWithViews();
         }
 
