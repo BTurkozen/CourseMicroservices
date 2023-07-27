@@ -1,6 +1,7 @@
 using Course.Web.Models;
 using Course.Web.Services.Concrates;
 using Course.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,14 @@ namespace Course.Web
 
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.LoginPath = "/Auth/SignIn";
+                options.ExpireTimeSpan = TimeSpan.FromDays(60);
+                options.SlidingExpiration = true;
+                options.Cookie.Name = "coursewebcookie";
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -51,6 +60,8 @@ namespace Course.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
