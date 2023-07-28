@@ -16,9 +16,9 @@ namespace Course.Web.Controllers
             _identityService = identityService;
         }
 
-        public async Task<IActionResult> SignIn()
+        public IActionResult SignIn()
         {
-            return await Task.FromResult(View());
+            return View();
         }
 
         [HttpPost]

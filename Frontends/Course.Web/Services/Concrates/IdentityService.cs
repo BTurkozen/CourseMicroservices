@@ -47,7 +47,7 @@ namespace Course.Web.Services.Concrates
             var discovery = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
                 Address = _serviceApiSettings.BaseUri,
-                Policy = new DiscoveryPolicy { RequireHttps = false },
+                Policy = new DiscoveryPolicy { RequireHttps = true },
             });
 
             if (discovery.IsError)
@@ -59,7 +59,6 @@ namespace Course.Web.Services.Concrates
             {
                 ClientId = _clientSettings.WebClientForUser.ClientId,
                 ClientSecret = _clientSettings.WebClientForUser.ClientSecret,
-                GrantType = "password",
                 UserName = signInInput.Email,
                 Password = signInInput.Password,
                 Address = discovery.TokenEndpoint,
@@ -79,7 +78,7 @@ namespace Course.Web.Services.Concrates
             var userInfoRequest = new UserInfoRequest
             {
                 Token = token.AccessToken,
-                Address = discovery.TokenEndpoint,
+                Address = discovery.UserInfoEndpoint,
             };
 
             var userInfo = await _httpClient.GetUserInfoAsync(userInfoRequest);
