@@ -81,9 +81,32 @@ namespace Course.Web.Services.Concrates
             return token;
         }
 
-        public Task RevokeRefreshToken()
+        public async Task RevokeRefreshToken()
         {
-            throw new System.NotImplementedException();
+            // Access Token Revoke edilemez. sadece Refresh token revoke edilebilir.
+            var discovery = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+            {
+                Address = _serviceApiSettings.BaseUri,
+                Policy = new DiscoveryPolicy { RequireHttps = true },
+            });
+
+            if (discovery.IsError)
+            {
+                throw discovery.Exception;
+            }
+
+            var refreshToken = await _contextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+
+            TokenRevocationRequest tokenRevocationRequest = new()
+            {
+                ClientId = _clientSettings.WebClient.ClientId,
+                ClientSecret = _clientSettings.WebClient.ClientSecret,
+                Address = discovery.RevocationEndpoint,
+                Token = refreshToken,
+                TokenTypeHint = "refresh_token",
+            };
+
+            await _httpClient.RevokeTokenAsync(tokenRevocationRequest);
         }
 
         public async Task<Response<bool>> SignIn(SignInInput signInInput)
