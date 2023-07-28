@@ -29,7 +29,14 @@ namespace Course.Web
         {
             services.AddHttpContextAccessor();
 
+            var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+
             services.AddHttpClient<IIdentityService, IdentityService>();
+
+            services.AddHttpClient<IUserService, UserService>(options =>
+            {
+                options.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
+            });
 
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
