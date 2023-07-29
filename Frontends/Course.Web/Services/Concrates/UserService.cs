@@ -17,7 +17,7 @@ namespace Course.Web.Services.Concrates
 
         public async Task<UserViewModel> GetUser()
         {
-            return await _httpClient.GetFromJsonAsync<UserViewModel>("/api/user/getuser");
+            return await _httpClient.GetFromJsonAsync<UserViewModel>("/api/users/getuser");
         }
     }
 }

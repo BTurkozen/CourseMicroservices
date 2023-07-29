@@ -9,10 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace Course.Web
 {
@@ -31,6 +27,8 @@ namespace Course.Web
             services.AddHttpContextAccessor();
 
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+
+            services.AddScoped<ResourceOwnerPasswordTokenHandler>();
 
             services.AddHttpClient<IIdentityService, IdentityService>();
 
