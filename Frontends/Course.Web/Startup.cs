@@ -1,3 +1,4 @@
+using Course.Shared.Services;
 using Course.Web.Handlers;
 using Course.Web.Models;
 using Course.Web.Services.Concrates;
@@ -25,6 +26,8 @@ namespace Course.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+
+            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
 

@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@model List<CourseViewModel>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Courses</h5>
+                @if (Model.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@course.Name</td>
+                                    <td>@course.Price</td>
+                                    <td>@course.Feature.Duration</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        Courses Not Found
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
