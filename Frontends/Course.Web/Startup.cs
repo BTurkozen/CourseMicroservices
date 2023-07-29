@@ -1,3 +1,4 @@
+using Course.Web.Handlers;
 using Course.Web.Models;
 using Course.Web.Services.Concrates;
 using Course.Web.Services.Interfaces;
@@ -36,7 +37,7 @@ namespace Course.Web
             services.AddHttpClient<IUserService, UserService>(options =>
             {
                 options.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
-            });
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
