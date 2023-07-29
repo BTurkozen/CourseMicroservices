@@ -32,6 +32,11 @@ namespace Course.Web
 
             services.AddHttpClient<IIdentityService, IdentityService>();
 
+            services.AddHttpClient<ICatalogService, CatalogService>(options =>
+            {
+                options.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Catalog.Path}");
+            });
+
             services.AddHttpClient<IUserService, UserService>(options =>
             {
                 options.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
