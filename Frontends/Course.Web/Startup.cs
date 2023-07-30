@@ -45,6 +45,8 @@ namespace Course.Web
                 options.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
+            services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
+
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
