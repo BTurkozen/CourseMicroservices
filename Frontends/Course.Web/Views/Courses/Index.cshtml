@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Courses</h5>
-                <a asp-controller="Courses" asp-action="Create" class="btn btn-success mb-3">Create a Course</a>
+                <a asp-controller="Courses" asp-action="Create" class="btn btn-primary mb-3">Create a Course</a>
                 @if (Model.Any())
                 {
                     <table class="table table-striped">
@@ -19,6 +19,10 @@
                                 <th>Name</th>
                                 <th>Price</th>
                                 <th>Duration</th>
+                                <th>Category</th>
+                                <th>
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,6 +33,11 @@
                                     <td>@course.Name</td>
                                     <td>@course.Price</td>
                                     <td>@course.Feature.Duration</td>
+                                    <td>@course.Category.Name</td>
+                                    <td>
+                                        <a asp-controller="Courses" asp-action="Update" asp-route-id="@course.Id" class="btn btn-success mb-3">Update</a>
+                                        <a asp-controller="Courses" asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger mb-3">Delete</a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>

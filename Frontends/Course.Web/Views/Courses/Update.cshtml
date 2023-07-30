@@ -1,16 +1,22 @@
-﻿@{
-    ViewData["Title"] = "Create";
+﻿
+@{
+    ViewData["Title"] = "Update";
 }
-@model CourseCreateInput
+@model CourseUpdateInput
 
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-tiitle">Add Course</h5>
-                <form asp-controller="Courses" asp-action="Create" , method="post" enctype="multipart/form-data">
+                <h5 class="card-tiitle">Update Course</h5>
+                <form asp-controller="Courses" asp-action="Update" , method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly"></div>
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="Picture" />
+
                     <div class="mb-3">
                         <label class="form-label" asp-for="CategoryId"></label>
                         <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.Categories">
@@ -40,10 +46,11 @@
                     </div>
 
                     @*Resim gelecek*@
-                    <button class="btn btn-primary" type="submit">Add</button>
+                    <button class="btn btn-success" type="submit">Update</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
