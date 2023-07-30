@@ -113,6 +113,15 @@ namespace Course.Web.Services.Concrates
 
         public async Task<bool> UpdateCourseAsync(CourseUpdateInput courseUpdateInput)
         {
+            var resultPhoto = await _photoStockService.UploadPhotoAsync(courseUpdateInput.PhotoFormFile);
+
+            if (resultPhoto is not null)
+            {
+                await _photoStockService.DeletePhotoAsync(resultPhoto.PhotoURL);
+
+                courseUpdateInput.Picture = resultPhoto.PhotoURL;
+            }
+
             var response = await _httpClient.PutAsJsonAsync<CourseUpdateInput>("courses", courseUpdateInput);
 
             return response.IsSuccessStatusCode;
