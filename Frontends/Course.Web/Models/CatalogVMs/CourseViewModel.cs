@@ -17,6 +17,7 @@ namespace Course.Web.Models.CatalogVMs
         public string ShortDescription { get => Description.Length > 100 ? Description.Substring(0, 100) + "..." : Description; }
 
         public string Picture { get; set; }
+        public string StockPictureUrl { get; set; }
 
         public DateTime CreatedTime { get; set; }
 

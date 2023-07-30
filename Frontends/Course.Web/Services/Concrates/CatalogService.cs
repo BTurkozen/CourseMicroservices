@@ -72,7 +72,7 @@ namespace Course.Web.Services.Concrates
 
             result.Data.ForEach(d =>
             {
-                d.Picture = _photoHelper.GetPhotoStockUrl(d.Picture);
+                d.StockPictureUrl = _photoHelper.GetPhotoStockUrl(d.Picture);
             });
 
             return result.Data;
@@ -91,7 +91,7 @@ namespace Course.Web.Services.Concrates
 
             result.Data.ForEach(d =>
             {
-                d.Picture = _photoHelper.GetPhotoStockUrl(d.Picture);
+                d.StockPictureUrl = _photoHelper.GetPhotoStockUrl(d.Picture);
             });
 
             return result.Data;
@@ -107,6 +107,8 @@ namespace Course.Web.Services.Concrates
             }
 
             var result = await response.Content.ReadFromJsonAsync<Response<CourseViewModel>>();
+
+            result.Data.StockPictureUrl = _photoHelper.GetPhotoStockUrl(result.Data.Picture);
 
             return result.Data;
         }

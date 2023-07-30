@@ -2,11 +2,7 @@
 using Course.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Course.Web.Controllers
@@ -27,9 +23,9 @@ namespace Course.Web.Controllers
             return View(await _catalogService.GetAllCourseAsync());
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Detail(string id)
         {
-            return View();
+            return View(await _catalogService.GetByCourseIdAsync(id));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
