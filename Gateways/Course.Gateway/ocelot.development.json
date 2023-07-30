@@ -19,11 +19,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5012
+          "Port": 5022
         }
       ],
       "UpstreamPathTemplate": "/services/photostock/{everything}",
