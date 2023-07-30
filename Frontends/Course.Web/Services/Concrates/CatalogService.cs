@@ -1,4 +1,5 @@
 ﻿using Course.Shared.Dtos;
+using Course.Web.Helpers;
 using Course.Web.Models;
 using Course.Web.Models.CatalogVMs;
 using Course.Web.Services.Interfaces;
@@ -13,11 +14,13 @@ namespace Course.Web.Services.Concrates
     {
         private readonly HttpClient _httpClient;
         private readonly IPhotoStockService _photoStockService;
+        private readonly PhotoHelper _photoHelper;
 
-        public CatalogService(HttpClient httpClient, IPhotoStockService photoStockService)
+        public CatalogService(HttpClient httpClient, IPhotoStockService photoStockService, PhotoHelper photoHelper)
         {
             _httpClient = httpClient;
             _photoStockService = photoStockService;
+            _photoHelper = photoHelper;
         }
 
         public async Task<bool> CreateCourseAsync(CourseCreateInput courseCreateInput)
@@ -67,6 +70,11 @@ namespace Course.Web.Services.Concrates
 
             var result = await response.Content.ReadFromJsonAsync<Response<List<CourseViewModel>>>();
 
+            result.Data.ForEach(d =>
+            {
+                d.Picture = _photoHelper.GetPhotoStockUrl(d.Picture);
+            });
+
             return result.Data;
         }
 
@@ -80,6 +88,11 @@ namespace Course.Web.Services.Concrates
             }
 
             var result = await response.Content.ReadFromJsonAsync<Response<List<CourseViewModel>>>();
+
+            result.Data.ForEach(d =>
+            {
+                d.Picture = _photoHelper.GetPhotoStockUrl(d.Picture);
+            });
 
             return result.Data;
         }

@@ -1,5 +1,6 @@
 using Course.Shared.Services;
 using Course.Web.Handlers;
+using Course.Web.Helpers;
 using Course.Web.Models;
 using Course.Web.Services.Concrates;
 using Course.Web.Services.Interfaces;
@@ -32,6 +33,8 @@ namespace Course.Web
             services.AddHttpContextAccessor();
 
             services.AddAccessTokenManagement();
+
+            services.AddSingleton<PhotoHelper>();
 
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
