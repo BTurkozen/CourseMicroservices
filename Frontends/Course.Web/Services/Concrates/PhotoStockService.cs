@@ -20,7 +20,7 @@ namespace Course.Web.Services.Concrates
 
         public async Task<bool> DeletePhotoAsync(string photoUrl)
         {
-            var response = await _httpClient.DeleteAsync($"photos?photoUrl={photoUrl}");
+            var response = await _httpClient.DeleteAsync($"photos?photoURL={photoUrl}");
 
             return response.IsSuccessStatusCode;
         }
