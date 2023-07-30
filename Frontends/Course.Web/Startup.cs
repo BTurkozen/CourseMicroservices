@@ -64,6 +64,11 @@ namespace Course.Web
 
             services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
 
+            services.AddHttpClient<IBasketService, BasketService>(options =>
+            {
+                options.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Basket.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.LoginPath = "/Auth/SignIn";
