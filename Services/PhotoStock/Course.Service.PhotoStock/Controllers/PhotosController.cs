@@ -24,7 +24,7 @@ namespace Course.Services.Catalog.Controllers
 
                 await photoFile.CopyToAsync(stream, cancellationToken);
 
-                var returnPath = $"Photos/{photoFile.FileName}";
+                var returnPath = photoFile.FileName;
 
                 PhotoDto photoDto = new() { PhotoURL = returnPath };
 

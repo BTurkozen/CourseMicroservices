@@ -18,9 +18,11 @@ namespace Course.Web.Services.Concrates
             _httpClient = httpClient;
         }
 
-        public Task<bool> DeletePhotoAsync(string photoUrl)
+        public async Task<bool> DeletePhotoAsync(string photoUrl)
         {
-            throw new System.NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"photos?photoUrl={photoUrl}");
+
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<PhotoStockViewModel> UploadPhotoAsync(IFormFile photo)
