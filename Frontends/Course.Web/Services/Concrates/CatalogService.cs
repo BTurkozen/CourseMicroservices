@@ -63,7 +63,7 @@ namespace Course.Web.Services.Concrates
 
         public async Task<List<CourseViewModel>> GetAllCourseByUserIdAsync(string userId)
         {
-            var response = await _httpClient.GetAsync($"courses/getalluserbyid/{userId}");
+            var response = await _httpClient.GetAsync($"courses/getalluserid/{userId}");
 
             if (response.IsSuccessStatusCode is false)
             {

@@ -27,11 +27,14 @@ namespace Course.Web
         {
             services.AddHttpContextAccessor();
 
+            services.AddAccessTokenManagement();
+
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
 
             services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+
             services.AddScoped<ClientCredentialTokenHandler>();
 
             services.AddHttpClient<IIdentityService, IdentityService>();

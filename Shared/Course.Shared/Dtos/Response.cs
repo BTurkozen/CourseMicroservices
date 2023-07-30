@@ -19,14 +19,14 @@ namespace Course.Shared.Dtos
         /// <para>Nesneler dışarıdan değiştirilmeye kapalı.</para>
         /// </summary>
         [JsonIgnore]
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; set; }
 
         /// <summary>
         /// Başarılı durumu.
         /// <para>Nesneler dışarıdan değiştirilmeye kapalı.</para>
         /// </summary>
         [JsonIgnore]
-        public bool IsSuccessful { get; private set; }
+        public bool IsSuccessful { get; set; }
 
         public List<string> Errors { get; set; }
 
@@ -74,7 +74,7 @@ namespace Course.Shared.Dtos
         /// <returns></returns>
         public static Response<T> Fail(string error, int statusCode)
         {
-            return new Response<T> { Errors = new List<string>() { error}, StatusCode = statusCode, IsSuccessful = false };
+            return new Response<T> { Errors = new List<string>() { error }, StatusCode = statusCode, IsSuccessful = false };
         }
     }
 }
