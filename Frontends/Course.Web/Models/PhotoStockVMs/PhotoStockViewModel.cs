@@ -2,6 +2,6 @@
 {
     public sealed class PhotoStockViewModel
     {
-        public string Url { get; set; }
+        public string PhotoURL { get; set; }
     }
 }

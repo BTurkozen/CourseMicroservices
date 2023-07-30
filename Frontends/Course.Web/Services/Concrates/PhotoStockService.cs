@@ -1,4 +1,5 @@
-﻿using Course.Web.Models.PhotoStockVMs;
+﻿using Course.Shared.Dtos;
+using Course.Web.Models.PhotoStockVMs;
 using Course.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -45,9 +46,11 @@ namespace Course.Web.Services.Concrates
 
             var response = await _httpClient.PostAsync("Photos", multiPartContent);
 
-            if (response.IsSuccessStatusCode) return null;
+            if (response.IsSuccessStatusCode is false) return null;
 
-            return await response.Content.ReadFromJsonAsync<PhotoStockViewModel>();
+            var result = await response.Content.ReadFromJsonAsync<Response<PhotoStockViewModel>>();
+
+            return result.Data;
         }
     }
 }

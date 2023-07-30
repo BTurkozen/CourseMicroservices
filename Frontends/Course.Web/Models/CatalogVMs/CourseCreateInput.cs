@@ -1,4 +1,6 @@
-﻿namespace Course.Web.Models.CatalogVMs
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Course.Web.Models.CatalogVMs
 {
     public class CourseCreateInput
     {
@@ -15,5 +17,6 @@
         public FeatureViewModel Feature { get; set; }
 
         public string CategoryId { get; set; }
+        public IFormFile PhotoFormFile { get; set; }
     }
 }

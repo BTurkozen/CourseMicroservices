@@ -12,14 +12,23 @@ namespace Course.Web.Services.Concrates
     public class CatalogService : ICatalogService
     {
         private readonly HttpClient _httpClient;
+        private readonly IPhotoStockService _photoStockService;
 
-        public CatalogService(HttpClient httpClient)
+        public CatalogService(HttpClient httpClient, IPhotoStockService photoStockService)
         {
             _httpClient = httpClient;
+            _photoStockService = photoStockService;
         }
 
         public async Task<bool> CreateCourseAsync(CourseCreateInput courseCreateInput)
         {
+            var resultPhoto = await _photoStockService.UploadPhotoAsync(courseCreateInput.PhotoFormFile);
+
+            if (resultPhoto is not null)
+            {
+                courseCreateInput.Picture = resultPhoto.PhotoURL;
+            }
+
             var response = await _httpClient.PostAsJsonAsync<CourseCreateInput>("courses", courseCreateInput);
 
             return response.IsSuccessStatusCode;
