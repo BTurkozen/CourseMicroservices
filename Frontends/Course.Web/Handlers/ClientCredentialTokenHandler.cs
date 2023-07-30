@@ -18,7 +18,9 @@ namespace Course.Web.Handlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await _clientCredentialTokenService.GetTokenAsync());
+            var accessToken = await _clientCredentialTokenService.GetTokenAsync();
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Trim());
 
             var response = await base.SendAsync(request, cancellationToken);
 

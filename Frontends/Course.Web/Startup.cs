@@ -25,17 +25,22 @@ namespace Course.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
+
+            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
+
             services.AddHttpContextAccessor();
 
             services.AddAccessTokenManagement();
 
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
-            var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
-
             services.AddScoped<ResourceOwnerPasswordTokenHandler>();
 
             services.AddScoped<ClientCredentialTokenHandler>();
+
+            var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+
 
             services.AddHttpClient<IIdentityService, IdentityService>();
 
@@ -50,10 +55,6 @@ namespace Course.Web
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
-
-            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
-
-            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
