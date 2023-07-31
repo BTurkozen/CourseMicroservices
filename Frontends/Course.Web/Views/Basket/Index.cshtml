@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@model BasketViewModel
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Basket</h5>
+                @if (Model is not null && Model.BasketItems.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Course Price</th>
+                                <th>Proccess</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var basketItem in Model.BasketItems)
+                            {
+                                <tr>
+                                    <td>@basketItem.CourseName</td>
+                                    <td>@basketItem.Price</td>
+                                    <td>
+                                        <a asp-controller="Basket" asp-action="RemoveBasketItem" asp-route-courseid="@basketItem.CourseId" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+
+                            @if (Model.HasDiscount)
+                            {
+                                <tr>
+                                    <td>
+                                        Discount
+                                    </td>
+                                    <td colspan="2">%@Model.DiscountRate.Value</td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td>@(Model.HasDiscount ? "Discounted Price" : "Total Price")</td>
+                                <td colspan="3" class="font-weight-bold">@Model.TotalPrice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-info"> Basket is empty</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
