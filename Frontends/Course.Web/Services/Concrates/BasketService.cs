@@ -67,7 +67,7 @@ namespace Course.Web.Services.Concrates
             return basketViewModel.Data;
         }
 
-        public async Task<bool> RemoveBasketItem(string courseId)
+        public async Task<bool> RemoveBasketItemAsync(string courseId)
         {
             var basket = await GetAllAsync();
 

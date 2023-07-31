@@ -9,7 +9,7 @@ namespace Course.Web.Services.Interfaces
         Task<bool> SaveOrUpdateAsync(BasketViewModel basketViewModel);
         Task<bool> DeleteAsync();
         Task AddBasketItem(BasketItemViewModel basketItemViewModel);
-        Task<bool> RemoveBasketItem(string courseId);
+        Task<bool> RemoveBasketItemAsync(string courseId);
         Task<string> ApplyDiscount(string discountCode);
         Task<bool> CancelApplyDiscount();
     }
