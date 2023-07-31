@@ -1,10 +1,12 @@
 ﻿using Course.Web.Models.BasketVMs;
 using Course.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Course.Web.Services.Concrates
 {
+    [Authorize]
     public class BasketController : Controller
     {
         private readonly ICatalogService _catalogService;

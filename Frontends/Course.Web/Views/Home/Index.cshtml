@@ -24,9 +24,14 @@
                 <img src="@course.StockPictureUrl" class="card-img-top" alt="..." />
                 <div class="card-body">
                     <h5 class="card-title">@course.Name</h5>
+                    <div class="badge badge-primary mb-2">
+                        <span class="font-weight-bold">Category: </span>@course.Category.Name
+                    </div>
                     <p class="card-text">@course.ShortDescription</p>
                     <h4 class="text-primary w-100"><span class="font-weight-bold">Price:</span> @course.Price₺</h4>
-                    <a asp-controller="Home" asp-action="Detail" asp-route-id="@course.Id" class="btn btn-dark w-100">Details</a>
+                    <div>
+                        <a asp-controller="Home" asp-action="Detail" asp-route-id="@course.Id" class="btn btn-dark w-100">Details</a>
+                    </div>
                 </div>
             </div>
         </div>

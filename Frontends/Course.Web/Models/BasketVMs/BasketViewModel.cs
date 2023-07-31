@@ -6,6 +6,10 @@ namespace Course.Web.Models.BasketVMs
 {
     public class BasketViewModel
     {
+        public BasketViewModel()
+        {
+            _basketItems = new List<BasketItemViewModel>();
+        }
         public string UserId { get; set; }
         public string DiscountCode { get; set; }
         public int? DiscountRate { get; set; }

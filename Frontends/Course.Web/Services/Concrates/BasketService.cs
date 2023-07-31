@@ -23,7 +23,7 @@ namespace Course.Web.Services.Concrates
 
             if (basket is not null)
             {
-                if (basket.BasketItems.Any(b => b.CourseId == basketItemViewModel.CourseId))
+                if (basket.BasketItems.Any(b => b.CourseId == basketItemViewModel.CourseId) is false)
                 {
                     basket.BasketItems.Add(basketItemViewModel);
                 }
