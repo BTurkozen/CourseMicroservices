@@ -1,6 +1,9 @@
-﻿using Course.Web.Models.BasketVMs;
+﻿using Course.Shared.Dtos;
+using Course.Web.Models.BasketVMs;
 using Course.Web.Services.Interfaces;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Course.Web.Services.Concrates
@@ -14,9 +17,24 @@ namespace Course.Web.Services.Concrates
             _httpClient = httpClient;
         }
 
-        public Task AddBasketItem(BasketItemViewModel basketItemViewModel)
+        public async Task AddBasketItem(BasketItemViewModel basketItemViewModel)
         {
-            throw new System.NotImplementedException();
+            var basket = await GetAllAsync();
+
+            if (basket is not null)
+            {
+                if (basket.BasketItems.Any(b => b.CourseId == basketItemViewModel.CourseId))
+                {
+                    basket.BasketItems.Add(basketItemViewModel);
+                }
+            }
+            else
+            {
+                basket = new BasketViewModel();
+                basket.BasketItems.Add(basketItemViewModel);
+            }
+
+            await SaveOrUpdateAsync(basket);
         }
 
         public Task<string> ApplyDiscount(string discountCode)
@@ -29,24 +47,61 @@ namespace Course.Web.Services.Concrates
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync()
+        public async Task<bool> DeleteAsync()
         {
-            throw new System.NotImplementedException();
+            var response = await _httpClient.DeleteAsync("baskets");
+
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<BasketViewModel> GetAllAsync()
+        public async Task<BasketViewModel> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            var response = await _httpClient.GetAsync("baskets");
+
+            if (response.IsSuccessStatusCode is false)
+            {
+                return null;
+            }
+            var basketViewModel = await response.Content.ReadFromJsonAsync<Response<BasketViewModel>>();
+
+            return basketViewModel.Data;
         }
 
-        public Task<bool> RemoveBasketItem(string courseId)
+        public async Task<bool> RemoveBasketItem(string courseId)
         {
-            throw new System.NotImplementedException();
+            var basket = await GetAllAsync();
+
+            if (basket is null)
+            {
+                return false;
+            }
+            var basketItem = basket.BasketItems.FirstOrDefault(b => b.CourseId == courseId);
+
+            if (basketItem is null)
+            {
+                return false;
+            }
+
+            var result = basket.BasketItems.Remove(basketItem);
+
+            if (result is false)
+            {
+                return false;
+            }
+
+            if (basket.BasketItems.Any())
+            {
+                basket.DiscountCode = null;
+            }
+
+            return await SaveOrUpdateAsync(basket);
         }
 
-        public Task<bool> SaveOrUpdateAsync(BasketViewModel basketViewModel)
+        public async Task<bool> SaveOrUpdateAsync(BasketViewModel basketViewModel)
         {
-            throw new System.NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync<BasketViewModel>("baskets", basketViewModel);
+
+            return response.IsSuccessStatusCode;
         }
     }
 }

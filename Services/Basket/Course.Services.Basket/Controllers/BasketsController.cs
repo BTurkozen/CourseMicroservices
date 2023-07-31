@@ -30,6 +30,8 @@ namespace Course.Services.Basket.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveOrUpdate(BasketDto basketDto)
         {
+            basketDto.UserId = _sharedIdentityService.GetUserId;
+
             return CreateActionResultInstance(await _basketService.SaveOrUpdateAsync(basketDto));
         }
 
