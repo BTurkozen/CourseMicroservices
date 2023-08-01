@@ -11,10 +11,12 @@ namespace Course.Web.Services.Concrates
     public class BasketService : IBasketService
     {
         private readonly HttpClient _httpClient;
+        private readonly IDiscountService _discountService;
 
-        public BasketService(HttpClient httpClient)
+        public BasketService(HttpClient httpClient, IDiscountService discountService)
         {
             _httpClient = httpClient;
+            _discountService = discountService;
         }
 
         public async Task AddBasketItem(BasketItemViewModel basketItemViewModel)
@@ -42,9 +44,16 @@ namespace Course.Web.Services.Concrates
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> CancelApplyDiscount()
+        public async Task<bool> CancelApplyDiscount()
         {
-            throw new System.NotImplementedException();
+            var basket = await GetAllAsync();
+
+            if (basket is  null && string.IsNullOrEmpty(basket.DiscountCode)) return false;
+
+            // Discount null ise indirim uygulanmıyor.
+            basket.DiscountCode = null;
+
+            return await SaveOrUpdateAsync(basket);
         }
 
         public async Task<bool> DeleteAsync()
