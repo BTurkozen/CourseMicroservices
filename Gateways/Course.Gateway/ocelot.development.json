@@ -53,11 +53,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5014
+          "Port": 5024
         }
       ],
       "UpstreamPathTemplate": "/services/discount/{everything}",
