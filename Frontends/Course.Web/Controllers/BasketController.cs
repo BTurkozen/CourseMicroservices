@@ -1,10 +1,11 @@
 ﻿using Course.Web.Models.BasketVMs;
+using Course.Web.Models.DiscountVMs;
 using Course.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Course.Web.Services.Concrates
+namespace Course.Web.Controllers
 {
     [Authorize]
     public class BasketController : Controller
@@ -42,6 +43,24 @@ namespace Course.Web.Services.Concrates
         public async Task<IActionResult> RemoveBasketItem(string courseId)
         {
             await _basketService.RemoveBasketItemAsync(courseId);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ApplyDiscount(DiscountApplyInput discountApplyInput)
+        {
+            var discountStatus = await _basketService.ApplyDiscount(discountApplyInput.Code);
+
+            // Kodu uyguladıktan sonra ındex sayfasına yönlendireceğiz.
+            // bir actiondan diğer actina data tasıyabilmek için "TempData" kullanıyoruz.
+            TempData["discountStatus"] = discountStatus;
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> CancelAppliedDiscount()
+        {
+            await _basketService.CancelApplyDiscount();
 
             return RedirectToAction(nameof(Index));
         }
