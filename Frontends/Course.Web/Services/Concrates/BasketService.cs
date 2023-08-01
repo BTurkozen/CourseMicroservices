@@ -39,16 +39,32 @@ namespace Course.Web.Services.Concrates
             await SaveOrUpdateAsync(basket);
         }
 
-        public Task<string> ApplyDiscount(string discountCode)
+        public async Task<bool> ApplyDiscount(string discountCode)
         {
-            throw new System.NotImplementedException();
+            // Abc uygular %10 indirim vardır birde bef indirim kodu ile %20 vardır 
+            // 2. kodu uygulayınca 1 kodu iptal etmek gerekmektedir.
+            await CancelApplyDiscount();
+
+            var basket = await GetAllAsync();
+
+            if (basket is null || string.IsNullOrEmpty(basket.DiscountCode)) return false;
+
+            var hasDiscount = await _discountService.GetDiscountAsync(discountCode);
+
+            if (hasDiscount is null) return false;
+
+            basket.DiscountRate = hasDiscount.Rate;
+
+            basket.DiscountCode = hasDiscount.Code;
+
+            return await SaveOrUpdateAsync(basket);
         }
 
         public async Task<bool> CancelApplyDiscount()
         {
             var basket = await GetAllAsync();
 
-            if (basket is  null && string.IsNullOrEmpty(basket.DiscountCode)) return false;
+            if (basket is null || string.IsNullOrEmpty(basket.DiscountCode)) return false;
 
             // Discount null ise indirim uygulanmıyor.
             basket.DiscountCode = null;
