@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Course.Web.Services.Concrates
+namespace Course.Web.Controllers
 {
     [Authorize]
     public class BasketController : Controller
