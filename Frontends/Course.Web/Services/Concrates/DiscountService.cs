@@ -1,6 +1,8 @@
-﻿using Course.Web.Models.DiscountVMs;
+﻿using Course.Shared.Dtos;
+using Course.Web.Models.DiscountVMs;
 using Course.Web.Services.Interfaces;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Course.Web.Services.Concrates
@@ -14,9 +16,15 @@ namespace Course.Web.Services.Concrates
             _httpClient = httpClient;
         }
 
-        public Task<DiscountViewModel> GetDiscountAsync(string code)
+        public async Task<DiscountViewModel> GetDiscountAsync(string code)
         {
-            throw new System.NotImplementedException();
+            var response = await _httpClient.GetAsync($"discount/GetByCode/{code}");
+
+            if (response.IsSuccessStatusCode) return null;
+
+            var result = await response.Content.ReadFromJsonAsync<Response<DiscountViewModel>>();
+
+            return result.Data;
         }
     }
 }
