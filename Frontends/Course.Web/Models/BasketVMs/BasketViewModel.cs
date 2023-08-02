@@ -35,7 +35,7 @@ namespace Course.Web.Models.BasketVMs
 
         public bool HasDiscount
         {
-            get => !string.IsNullOrEmpty(DiscountCode);
+            get => !string.IsNullOrEmpty(DiscountCode) && DiscountRate.HasValue;
         }
     }
 }

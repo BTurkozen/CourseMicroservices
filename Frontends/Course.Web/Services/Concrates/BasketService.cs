@@ -47,7 +47,7 @@ namespace Course.Web.Services.Concrates
 
             var basket = await GetAllAsync();
 
-            if (basket is null || string.IsNullOrEmpty(basket.DiscountCode)) return false;
+            if (basket is null) return false;
 
             var hasDiscount = await _discountService.GetDiscountAsync(discountCode);
 

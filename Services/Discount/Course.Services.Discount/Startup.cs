@@ -32,6 +32,12 @@ namespace Course.Services.Discount
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
+            services.AddScoped<IDiscountService, DiscountService>();
+
             var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
             // Sadece read veya write yetkilendirme yapmak istediğimizde burada yeni bir policy oluşturuyoruz.
@@ -48,12 +54,6 @@ namespace Course.Services.Discount
                         options.Audience = "resource_discount";
                         options.RequireHttpsMetadata = true;
                     });
-
-            services.AddHttpContextAccessor();
-            
-            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
-
-            services.AddScoped<IDiscountService, DiscountService>();
 
             services.AddControllers(options =>
             {

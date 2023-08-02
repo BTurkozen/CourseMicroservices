@@ -18,9 +18,9 @@ namespace Course.Web.Services.Concrates
 
         public async Task<DiscountViewModel> GetDiscountAsync(string code)
         {
-            var response = await _httpClient.GetAsync($"discount/GetByCode/{code}");
+            var response = await _httpClient.GetAsync($"discounts/GetByCode/{code}");
 
-            if (response.IsSuccessStatusCode) return null;
+            if (response.IsSuccessStatusCode is false) return null;
 
             var result = await response.Content.ReadFromJsonAsync<Response<DiscountViewModel>>();
 
