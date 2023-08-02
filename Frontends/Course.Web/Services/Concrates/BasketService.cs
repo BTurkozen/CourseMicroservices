@@ -11,10 +11,12 @@ namespace Course.Web.Services.Concrates
     public class BasketService : IBasketService
     {
         private readonly HttpClient _httpClient;
+        private readonly IDiscountService _discountService;
 
-        public BasketService(HttpClient httpClient)
+        public BasketService(HttpClient httpClient, IDiscountService discountService)
         {
             _httpClient = httpClient;
+            _discountService = discountService;
         }
 
         public async Task AddBasketItem(BasketItemViewModel basketItemViewModel)
@@ -37,14 +39,35 @@ namespace Course.Web.Services.Concrates
             await SaveOrUpdateAsync(basket);
         }
 
-        public Task<string> ApplyDiscount(string discountCode)
+        public async Task<bool> ApplyDiscount(string discountCode)
         {
-            throw new System.NotImplementedException();
+            // Abc uygular %10 indirim vardır birde bef indirim kodu ile %20 vardır 
+            // 2. kodu uygulayınca 1 kodu iptal etmek gerekmektedir.
+            await CancelApplyDiscount();
+
+            var basket = await GetAllAsync();
+
+            if (basket is null) return false;
+
+            var hasDiscount = await _discountService.GetDiscountAsync(discountCode);
+
+            if (hasDiscount is null) return false;
+
+            basket.ApplyDiscount(hasDiscount.Code, hasDiscount.Rate);
+
+            return await SaveOrUpdateAsync(basket);
         }
 
-        public Task<bool> CancelApplyDiscount()
+        public async Task<bool> CancelApplyDiscount()
         {
-            throw new System.NotImplementedException();
+            var basket = await GetAllAsync();
+
+            if (basket is null || string.IsNullOrEmpty(basket.DiscountCode)) return false;
+
+            // Discount null ise indirim uygulanmıyor.
+            basket.CancelDiscount();
+
+            return await SaveOrUpdateAsync(basket);
         }
 
         public async Task<bool> DeleteAsync()

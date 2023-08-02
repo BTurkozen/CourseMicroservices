@@ -37,7 +37,8 @@ namespace Course.Services.Discount.Controllers
             return CreateActionResultInstance(await _discountService.GetByIdAsync(id));
         }
 
-        [HttpGet("[Action]/{code}")]
+        [HttpGet]
+        [Route("/api/[controller]/[action]/{code}")]
         public async Task<IActionResult> GetByCode(string code)
         {
             var userId = _sharedIdentityService.GetUserId;

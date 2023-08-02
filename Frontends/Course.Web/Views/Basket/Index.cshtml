@@ -24,7 +24,7 @@
                             {
                                 <tr>
                                     <td>@basketItem.CourseName</td>
-                                    <td>@basketItem.Price</td>
+                                    <td>@basketItem.Price @(Model.HasDiscount ? $"(%{Model.DiscountRate.Value} apply)" : "")</td>
                                     <td>
                                         <a asp-controller="Basket" asp-action="RemoveBasketItem" asp-route-courseid="@basketItem.CourseId" class="btn btn-danger">Delete</a>
                                     </td>
@@ -47,6 +47,38 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <form asp-controller="Basket" asp-action="ApplyDiscount" method="post">
+
+                        @if (Model.HasDiscount)
+                        {
+                            <div class="alert alert-success">
+                                "@Model.DiscountCode" indirim kodu uygulandı.
+                                <a asp-controller="Basket" asp-action="CancelAppliedDiscount" class="ml-2">(Cancel)</a>
+                            </div>
+                        }
+
+                        @if (TempData["discountStatus"] is not null && (bool)TempData["discountStatus"] is false)
+                        {
+                            <div class="alert alert-danger">
+                                İndirim Kodu geçersiz.
+                            </div>
+                        }
+
+                        <div class="input-group mb-3">
+                            <input type="text" name="DiscountApplyInput.Code" class="form-control" />
+
+                            <button class="btn-primary btn-outline-secondary" type="submit">Apply</button>
+                        </div>
+
+                        @if (TempData["DiscountError"] is not null)
+                        {
+                            <div class="text-danger">
+                                @TempData["DiscountError"]
+                            </div>
+                        }
+
+                    </form>
                 }
                 else
                 {
