@@ -53,9 +53,7 @@ namespace Course.Web.Services.Concrates
 
             if (hasDiscount is null) return false;
 
-            basket.DiscountRate = hasDiscount.Rate;
-
-            basket.DiscountCode = hasDiscount.Code;
+            basket.ApplyDiscount(hasDiscount.Code, hasDiscount.Rate);
 
             return await SaveOrUpdateAsync(basket);
         }
@@ -67,7 +65,7 @@ namespace Course.Web.Services.Concrates
             if (basket is null || string.IsNullOrEmpty(basket.DiscountCode)) return false;
 
             // Discount null ise indirim uygulanmıyor.
-            basket.DiscountCode = null;
+            basket.CancelDiscount();
 
             return await SaveOrUpdateAsync(basket);
         }

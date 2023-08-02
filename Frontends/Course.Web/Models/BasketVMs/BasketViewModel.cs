@@ -37,5 +37,17 @@ namespace Course.Web.Models.BasketVMs
         {
             get => !string.IsNullOrEmpty(DiscountCode) && DiscountRate.HasValue;
         }
+
+        public void ApplyDiscount(string code, int rate)
+        {
+            DiscountCode = code;
+            DiscountRate = rate;
+        }
+
+        public void CancelDiscount()
+        {
+            DiscountRate = null;
+            DiscountCode = null;
+        }
     }
 }
