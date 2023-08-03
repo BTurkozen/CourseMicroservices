@@ -1,4 +1,5 @@
 ﻿using Course.Web.Models.OrderVMs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Course.Web.Services.Interfaces
@@ -19,6 +20,6 @@ namespace Course.Web.Services.Interfaces
         /// <returns></returns>
         Task SuspendOrderAsync(CheckoutInfoInput checkoutInfoInput);
 
-        Task<OrderViewModel> GetAllOrderAsync();
+        Task<List<OrderViewModel>> GetAllOrderAsync();
     }
 }
