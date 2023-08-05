@@ -18,7 +18,7 @@ namespace Course.Web.Services.Interfaces
         /// </summary>
         /// <param name="checkoutInfoInput"></param>
         /// <returns></returns>
-        Task SuspendOrderAsync(CheckoutInfoInput checkoutInfoInput);
+        Task<OrderSuspendViewModel> SuspendOrderAsync(CheckoutInfoInput checkoutInfoInput);
 
         Task<List<OrderViewModel>> GetAllOrderAsync();
     }

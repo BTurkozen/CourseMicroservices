@@ -98,9 +98,55 @@ namespace Course.Web.Services.Concrates
             return response.Data;
         }
 
-        public Task SuspendOrderAsync(CheckoutInfoInput checkoutInfoInput)
+        public async Task<OrderSuspendViewModel> SuspendOrderAsync(CheckoutInfoInput checkoutInfoInput)
         {
-            throw new System.NotImplementedException();
+
+            var orderCreateInput = new OrderCreateInput()
+            {
+                BuyerId = _sharedIdentityService.GetUserId,
+                Address = new AddressCreateInput()
+                {
+                    Province = checkoutInfoInput.Province,
+                    District = checkoutInfoInput.District,
+                    Line = checkoutInfoInput.Line,
+                    Street = checkoutInfoInput.Street,
+                    ZipCode = checkoutInfoInput.ZipCode,
+                },
+            };
+
+            var basket = await _basketService.GetAllAsync();
+
+            basket.BasketItems.ForEach(basketItem =>
+            {
+                var orderItemCreateInput = new OrderItemCreateInput()
+                {
+                    ProductId = basketItem.CourseId,
+                    Price = basketItem.GetCurrentPice,
+                    PictureUrl = "",
+                    ProductName = basketItem.CourseName,
+                };
+
+                orderCreateInput.OrderItems.Add(orderItemCreateInput);
+            });
+
+            var paymentInfoInput = new PaymentInfoInput()
+            {
+                CardName = checkoutInfoInput.CardName,
+                CardNumber = checkoutInfoInput.CardNumber,
+                CVV = checkoutInfoInput.CVV,
+                Expiration = checkoutInfoInput.Expiration,
+                TotalPrice = basket.TotalPrice,
+                Order = orderCreateInput,
+            };
+
+            var responsePayment = await _paymentService.ReceivePayment(paymentInfoInput);
+
+            if (responsePayment is false)
+            {
+                return new OrderSuspendViewModel() { Error = "Could not receive payment", IsSuccessful = false };
+            }
+
+            return new OrderSuspendViewModel() { IsSuccessful = true };
         }
     }
 }
