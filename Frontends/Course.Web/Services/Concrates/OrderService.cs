@@ -82,11 +82,13 @@ namespace Course.Web.Services.Concrates
                 return new OrderCreatedViewModel { Error = "Order could not be created", IsSuccessful = false };
             }
 
-            var orderCreatedViewModel = await response.Content.ReadFromJsonAsync<OrderCreatedViewModel>();
+            var orderCreatedViewModel = await response.Content.ReadFromJsonAsync<Response<OrderCreatedViewModel>>();
 
-            orderCreatedViewModel.IsSuccessful = true;
+            orderCreatedViewModel.Data.IsSuccessful = true;
 
-            return orderCreatedViewModel;
+            await _basketService.DeleteAsync();
+
+            return orderCreatedViewModel.Data;
         }
 
         public async Task<List<OrderViewModel>> GetAllOrderAsync()
