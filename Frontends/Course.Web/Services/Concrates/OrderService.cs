@@ -146,6 +146,8 @@ namespace Course.Web.Services.Concrates
                 return new OrderSuspendViewModel() { Error = "Could not receive payment", IsSuccessful = false };
             }
 
+            await _basketService.DeleteAsync();
+
             return new OrderSuspendViewModel() { IsSuccessful = true };
         }
     }
