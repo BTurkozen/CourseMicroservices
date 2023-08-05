@@ -27,6 +27,7 @@ namespace Course.Services.FakePayment
             services.AddMassTransit(ms =>
             {
                 // Varsayılan Port : 5672
+                // Management Varsayılan portu olarak : 15672
                 ms.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
