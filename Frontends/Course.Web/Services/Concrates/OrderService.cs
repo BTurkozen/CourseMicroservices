@@ -67,7 +67,8 @@ namespace Course.Web.Services.Concrates
                 var orderItemCreateInput = new OrderItemCreateInput()
                 {
                     ProductId = basketItem.CourseId,
-                    Price = basketItem.Price,
+                    Price = basketItem.GetCurrentPice,
+                    PictureUrl = "",
                     ProductName = basketItem.CourseName,
                 };
 
@@ -82,6 +83,8 @@ namespace Course.Web.Services.Concrates
             }
 
             var orderCreatedViewModel = await response.Content.ReadFromJsonAsync<OrderCreatedViewModel>();
+
+            orderCreatedViewModel.IsSuccessful = true;
 
             return orderCreatedViewModel;
         }

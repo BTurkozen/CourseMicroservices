@@ -22,5 +22,28 @@ namespace Course.Web.Controllers
 
             return View(new CheckoutInfoInput());
         }
+        [HttpPost]
+        public async Task<IActionResult> Checkout(CheckoutInfoInput checkoutInfoInput)
+        {
+            var orderStatus = await _orderService.CreateOrderAsync(checkoutInfoInput);
+
+            if (orderStatus.IsSuccessful is false)
+            {
+                ViewBag.basket = await _basketService.GetAllAsync();
+
+                ViewBag.error = orderStatus.Error;
+
+                return View();
+            }
+
+            return RedirectToAction(nameof(SuccessfulCheckout), new { orderId = orderStatus.OrderId });
+        }
+
+        public async Task<IActionResult> SuccessfulCheckout(int orderId)
+        {
+            ViewBag.orderId = orderId;
+
+            return await Task.FromResult(View());
+        }
     }
 }
