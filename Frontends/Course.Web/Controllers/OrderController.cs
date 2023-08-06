@@ -51,5 +51,10 @@ namespace Course.Web.Controllers
 
             return await Task.FromResult(View());
         }
+
+        public async Task<IActionResult> CheckoutHistory()
+        {
+            return View(await _orderService.GetAllOrderAsync());
+        }
     }
 }

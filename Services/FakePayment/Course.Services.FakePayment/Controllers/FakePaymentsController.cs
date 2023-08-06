@@ -49,7 +49,7 @@ namespace Course.Services.FakePayment.Controllers
                 });
             });
 
-            await sendEndpoint.Send(createOrderMessageCommand);
+            await sendEndpoint.Send<CreateOrderMessageCommand>(createOrderMessageCommand);
 
             return CreateActionResultInstance(Shared.Dtos.Response<NoContentResult>.Success(200));
         }

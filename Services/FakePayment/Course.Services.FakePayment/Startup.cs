@@ -39,6 +39,8 @@ namespace Course.Services.FakePayment
                 });
             });
 
+            services.AddMassTransitHostedService();
+
             var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");

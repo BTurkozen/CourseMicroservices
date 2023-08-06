@@ -1,5 +1,7 @@
-﻿using Course.Services.Order.Infrastructure;
+﻿using Course.Services.Order.Application.Consumers;
+using Course.Services.Order.Infrastructure;
 using Course.Shared.Services;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +36,34 @@ namespace Course.Services.Order.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddMassTransit(ms =>
+           {
+               // Consumer ekliyoruz.
+               ms.AddConsumer<CreateOrderMessageCommandConsumer>();
+
+               // Varsayılan Port : 5672
+               // Management Varsayılan portu olarak : 15672
+               ms.UsingRabbitMq((context, cfg) =>
+               {
+                   cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
+                   {
+                       // RabitMq tarfından varsayılan olarak geliyor.
+                       host.Username("guest");
+                       host.Password("guest");
+                   });
+
+                   // Hangi Endpointten dataları alıcağız.
+                   cfg.ReceiveEndpoint("create-order-service", e =>
+                   {
+                       e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+                   });
+
+               });
+           });
+
+            services.AddMassTransitHostedService();
+
             var requeireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
