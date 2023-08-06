@@ -1,5 +1,6 @@
 ﻿using Course.Services.Catalog.Services;
 using Course.Services.Catalog.Settings;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,20 @@ namespace Course.Services.Catalog
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Course.Services.Catalog", Version = "v1" });
             });
 
+
+            services.AddMassTransit(options =>
+            {
+                options.UsingRabbitMq((context,cfg) =>
+                {
+                    cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("Password");
+                    });
+                });
+            });
+
+            //services.AddMassTransitHostedService();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
