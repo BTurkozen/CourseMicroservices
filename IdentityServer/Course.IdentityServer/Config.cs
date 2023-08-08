@@ -109,7 +109,7 @@ namespace Course.IdentityServer
                     ClientName = "Token Exchange Client",
                     ClientId = "TokenExchangeClient",
                     ClientSecrets = { new Secret ("secret".Sha256())},
-                    AllowedGrantTypes = new[]{"urn:ieft:params:oauth:grant-type:token-exchange"},
+                    AllowedGrantTypes = new[]{"urn:ietf:params:oauth:grant-type:token-exchange"},
                     AllowedScopes = {
                         "discount_fullpermission",
                         "payment_fullpermission",

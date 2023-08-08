@@ -31,14 +31,14 @@ namespace Course.Gateway.DelegateHandlers
 
             if (discovery.IsError) throw discovery.Exception;
 
-            TokenExchangeTokenRequest tokenExchangeTokenRequest = new()
+            TokenExchangeTokenRequest tokenExchangeTokenRequest = new TokenExchangeTokenRequest()
             {
                 Address = discovery.TokenEndpoint,
                 ClientId = _configuration["ClientId"],
                 ClientSecret = _configuration["ClientSecret"],
                 GrantType = _configuration["TokenGrantType"],
                 SubjectToken = requestToken,
-                SubjectTokenType = "urn:ieft:params:oauth:token-type:access-token",
+                SubjectTokenType = "urn:ietf:params:oauth:token-type:access-token",
                 Scope = "openid discount_fullpermission payment_fullpermission",
             };
 
