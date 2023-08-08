@@ -42,6 +42,8 @@ namespace Course.Services.Order.API
                // Consumer ekliyoruz.
                ms.AddConsumer<CreateOrderMessageCommandConsumer>();
 
+               ms.AddConsumer<CourseNameChangeEventConsumer>();
+
                // Varsayılan Port : 5672
                // Management Varsayılan portu olarak : 15672
                ms.UsingRabbitMq((context, cfg) =>
@@ -58,6 +60,12 @@ namespace Course.Services.Order.API
                    {
                        e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
                    });
+
+                   cfg.ReceiveEndpoint("course-name-changed-event-order-service", e =>
+                   {
+                       e.ConfigureConsumer<CourseNameChangeEventConsumer>(context);
+                   });
+
 
                });
            });

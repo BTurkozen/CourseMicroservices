@@ -51,7 +51,7 @@ namespace Course.Services.Catalog
                     cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
                     {
                         host.Username("guest");
-                        host.Password("Password");
+                        host.Password("guest");
                     });
                 });
             });
