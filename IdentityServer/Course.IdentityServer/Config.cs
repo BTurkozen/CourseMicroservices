@@ -84,7 +84,13 @@ namespace Course.IdentityServer
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     // Burada hangi izinlere müsade edeceğimiz kısmını dolduruyoruz.
                     // IdentityServerConstants.StandardScopes.OfflineAccess Refresh token için eklenmektedir. Kullanıcı offline olsa dahi kullanıcı adına yeni bir token alabiliriz istek atabiliriz. Burada elimizde refresh token olmadığı zaman Kullanıcıdan Email ve Password almak zorunda olmamak için buna ihtiyaç duyuyoruz.
-                    AllowedScopes = {"basket_fullpermission", "order_fullpermission", "gateway_fullpermission", "discount_fullpermission", "payment_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles"},
+                    AllowedScopes = {
+                        "basket_fullpermission",
+                        "order_fullpermission",
+                        "gateway_fullpermission", 
+                        //"discount_fullpermission",
+                        //"payment_fullpermission",
+                        IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles"},
                      // Access Token süresini belirliyoruz. 1 saat olarak ayarlıyoruz.
                      AccessTokenLifetime = 1*60*60,
                      // Refresh Token süresini belirliyoruz.
@@ -97,7 +103,19 @@ namespace Course.IdentityServer
                      // TokenUsage.ReUse => Tekrar Kullanılmasını sağlar..
                      // Token.OneTimeOnly => Bir kere kullanılmasını sağlar.
                      RefreshTokenUsage = TokenUsage.ReUse,
-                }
+                },
+                new Client
+                {
+                    ClientName = "Token Exchange Client",
+                    ClientId = "TokenExchangeClient",
+                    ClientSecrets = { new Secret ("secret".Sha256())},
+                    AllowedGrantTypes = new[]{"urn:ieft:params:oauth:grant-type:token-exchange"},
+                    AllowedScopes = {
+                        "discount_fullpermission",
+                        "payment_fullpermission",
+                        IdentityServerConstants.StandardScopes.OpenId,
+                    }
+                },
             };
     }
 }
