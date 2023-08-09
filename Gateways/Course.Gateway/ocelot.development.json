@@ -36,11 +36,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5013
+          "Port": 5023
         }
       ],
       "UpstreamPathTemplate": "/services/basket/{everything}",
@@ -53,20 +53,19 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5014
+          "Port": 5024
         }
       ],
       "UpstreamPathTemplate": "/services/discount/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "UpstreamSchema": "http",
+      "UpstreamSchema": "https",
       "DelegatingHandlers": [ "TokenExchangeDelegateHandler" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "GatewayAuthenticationSchema"
-        //"AllowedScopes": [ "discount_fullpermission" ]
       }
     },
     {
@@ -88,11 +87,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5016
+          "Port": 5026
         }
       ],
       "UpstreamPathTemplate": "/services/fakepayment/{everything}",
@@ -101,7 +100,6 @@
       "DelegatingHandlers": [ "TokenExchangeDelegateHandler" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "GatewayAuthenticationSchema"
-        //"AllowedScopes": [ "payment_fullpermission" ]
       }
     }
   ],

@@ -58,6 +58,8 @@ namespace Course.IdentityServer
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>();
 
+            builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
+            builder.AddExtensionGrantValidator<TokenExchangeExtentionGrantValidator>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
@@ -74,8 +76,6 @@ namespace Course.IdentityServer
                     options.ClientSecret = "copy client secret from Google here";
                 });
 
-            builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
-            builder.AddExtensionGrantValidator<TokenExchangeExtentionGrantValidator>();
         }
 
         public void Configure(IApplicationBuilder app)

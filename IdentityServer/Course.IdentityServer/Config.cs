@@ -88,8 +88,6 @@ namespace Course.IdentityServer
                         "basket_fullpermission",
                         "order_fullpermission",
                         "gateway_fullpermission", 
-                        //"discount_fullpermission",
-                        //"payment_fullpermission",
                         IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles"},
                      // Access Token süresini belirliyoruz. 1 saat olarak ayarlıyoruz.
                      AccessTokenLifetime = 1*60*60,
