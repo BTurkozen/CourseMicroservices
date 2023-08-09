@@ -4,7 +4,7 @@ services:
     image: mongo
   basketdb:
     image: redis
-  discount:
+  discountdb:
     image: postgres
   identitydb:
     image: mcr.microsoft.com/mssql/server
@@ -14,6 +14,6 @@ services:
     image: rabbitmq:management
 volumes:
   catalogdb_volume:
-  discount_volume:
+  discountdb_volume:
   identitydb_volume:
   orderdb_volume:
