@@ -54,10 +54,10 @@ services:
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development
       - RabbitMQUrl:rabbitmq
-      - IdentityServerURL:http://identityserver.api:5001
+      - IdentityServerURL=http://identityserver.api:5001
       - DatabaseSettings:ConnectionString=mongodb://catalogdb:27017
     ports:
-      - "5011:80"
+      - "5021:80"
     depends_on:
       - catalogdb
   identityserver.api:
@@ -69,3 +69,51 @@ services:
       - "5001:80"
     depends_on:
       - identitydb
+  basket.api:
+    container_name: basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "RedisSettings:Port=6379"
+      - "RedisSettings:Host=basketdb"
+    ports:
+      - 5023:80
+    depends_on:
+      - basketdb
+  photostock.api:
+    container_name: photostock.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api:5001
+    ports:
+      - 5022:80
+    volumes:
+      - type: bind
+        source: C:\Users\xcmPr\Desktop\Photos
+        target: /app/wwwroot/photos
+  discount.api:
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - "ConnectionStrings:PostgreSql=User ID=admin;Password=Password_*12;Server=discountdb;Port=5432;Database=DiscountDb;Integrated Security=true;Pooling=true;"
+    ports:
+      - 5024:80
+    depends_on:
+      - discountdb
+  fakepayment.api:
+    container_name: fakepayment.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - "RabbitMQUrl=rabbitmq"
+    ports:
+      - 5026:80
+  order.api:
+    container_name: order.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - "RabbitMQUrl=rabbitmq"
+      - "ConnectionStrings:DefaultConnection=Server=orderdb,1444; Database=OrderDb; User=sa;Password=Password_12*;"
+    ports:
+      - 5025:80

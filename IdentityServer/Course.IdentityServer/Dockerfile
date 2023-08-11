@@ -6,7 +6,7 @@ COPY IdentityServer/Course.IdentityServer/*.csproj IdentityServer/Course.Identit
 RUN dotnet restore IdentityServer/Course.IdentityServer/*.csproj
 COPY . .
 RUN dotnet publish IdentityServer/Course.IdentityServer/*.csproj -c Release -o out
-FROM mcr.microsoft.com/dotnet/aspnet:3.1 as runtime
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 ENTRYPOINT [ "dotnet","Course.IdentityServer.dll" ]
