@@ -31,13 +31,13 @@ services:
     volumes:
       - identitydb_volume:/var/opt/mssql
     environment:
-    - ACCEPT_EULA=Y
-    - SA_PASSWORD=Password_123654
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password_123654
   orderdb:
     container_name: orderdb
     restart: always
     ports:
-      - "1444:1444"
+      - "1444:1433"
     volumes:
       - orderdb_volume:/var/opt/mssql
     environment:
@@ -51,10 +51,11 @@ services:
       - "15672:15672"
   catalog.api:
     container_name: catalog.api
-    environment: 
+    restart: on-failure
+    environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - RabbitMQUrl:rabbitmq
-      - IdentityServerURL=http://identityserver.api:5001
+      - IdentityServerURL=https://identityserver.api
       - DatabaseSettings:ConnectionString=mongodb://catalogdb:27017
     ports:
       - "5021:80"
@@ -62,7 +63,8 @@ services:
       - catalogdb
   identityserver.api:
     container_name: identityserver.api
-    environment: 
+    restart: on-failure
+    environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:DefaultConnection=Server=identitydb,1433;Database=IdentityDb;User=sa;Password=Password_123654"
     ports:
@@ -81,9 +83,10 @@ services:
       - basketdb
   photostock.api:
     container_name: photostock.api
+    restart: on-failure
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityServerURL=http://identityserver.api:5001
+      - IdentityServerURL=https://identityserver.api
     ports:
       - 5022:80
     volumes:
@@ -92,9 +95,10 @@ services:
         target: /app/wwwroot/photos
   discount.api:
     container_name: discount.api
+    restart: on-failure
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityServerURL=http://identityserver.api
+      - IdentityServerURL=https://identityserver.api
       - "ConnectionStrings:PostgreSql=User ID=admin;Password=Password_*12;Server=discountdb;Port=5432;Database=DiscountDb;Integrated Security=true;Pooling=true;"
     ports:
       - 5024:80
@@ -102,18 +106,45 @@ services:
       - discountdb
   fakepayment.api:
     container_name: fakepayment.api
+    restart: on-failure
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityServerURL=http://identityserver.api
+      - IdentityServerURL=https://identityserver.api
       - "RabbitMQUrl=rabbitmq"
     ports:
       - 5026:80
   order.api:
     container_name: order.api
+    restart: on-failure
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityServerURL=http://identityserver.api
+      - IdentityServerURL=https://identityserver.api
       - "RabbitMQUrl=rabbitmq"
-      - "ConnectionStrings:DefaultConnection=Server=orderdb,1444; Database=OrderDb; User=sa;Password=Password_12*;"
+      - "ConnectionStrings:DefaultConnection=Server=orderdb,1433; Database=OrderDb; User=sa;Password=Password_12*;"
     ports:
       - 5025:80
+  gateway.api:
+    container_name: gateway.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - IdentityServerURL=https://identityserver.api
+    ports:
+      - "5000:80"
+  aspnetcoremvc.web:
+    container_name: aspnetcoremvc.web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceApiSettings:IdentityBaseUri=https://identityserver.api
+      - ServiceApiSettings:GatewayBaseUri=http://gateway.api
+    ports:
+      - "5010:80"
+    depends_on: 
+      - gateway.api
+      - identityserver.api
+      - catalog.api
+      - basket.api
+      - discount.api
+      - order.api
+      - photostock.api
+      - fakepayment.api
+
