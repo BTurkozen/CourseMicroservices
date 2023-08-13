@@ -1,44 +1,97 @@
-using Course.Services.Catalog.Dtos;
+﻿using Course.Services.Catalog.Dtos;
 using Course.Services.Catalog.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Course.Services.Catalog.Settings;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
-namespace Course.Services.Catalog
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers(options =>
 {
-    public class Program
+    options.Filters.Add(new AuthorizeFilter());
+});
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddMassTransit(options =>
+{
+    options.UsingRabbitMq((context, cfg) =>
     {
-        public static void Main(string[] args)
+        cfg.Host(builder.Configuration["RabbitMQUrl"], "/", host =>
         {
-            var host = CreateHostBuilder(args).Build();
+            host.Username("guest");
+            host.Password("guest");
+        });
+    });
+});
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var serviceProvider = scope.ServiceProvider;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            // Bu microservice kimin dağıttığı bilgisini vereceğiz.
+            // Token Dağıtmaktan görevli arkadaş.
+            // IdentityServer Url'lini veriyoruz.
+            options.Authority = builder.Configuration["IdentityServerURL"];
 
-                var categoryService = serviceProvider.GetRequiredService<ICategoryService>();
+            // Audience Parametrelerini belirtiyoruz.
+            // Tekdir Birden fazla belirtilemez.
+            options.Audience = "resource_catalog";
 
-                if (!categoryService.GetAllAsync().Result.Data.Any())
-                {
-                    categoryService.CreateAsync(new CategoryCreateDto { Name = "Asp.net Core Kursu" }).Wait();
-                    categoryService.CreateAsync(new CategoryCreateDto { Name = "Asp.net Core API Kursu" }).Wait();
-                }
-            }
+            // Https kullanılmadığı için burada belirtiyoruz.
+            options.RequireHttpsMetadata = true;
 
-            host.Run();
-        }
+        });
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+// Typeof içerisine Startup verdiğimiz de Assembly de olan bütün mapperları bulup ekleyecek.
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+// Option Pattern uyguluyoruz.
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+
+// Değişmeyen değerler olduğu için Singleton olarak kullandık.
+builder.Services.AddSingleton<IDatabaseSettings>(sp =>
+{
+    return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+});
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+
+
+var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+
+var serviceProvider = scope.ServiceProvider;
+
+var categoryService = serviceProvider.GetRequiredService<ICategoryService>();
+
+if (!(await categoryService.GetAllAsync()).Data.Any())
+{
+    await categoryService.CreateAsync(new CategoryCreateDto { Name = "Asp.net Core Kursu" });
+    await categoryService.CreateAsync(new CategoryCreateDto { Name = "Asp.net Core API Kursu" });
 }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
