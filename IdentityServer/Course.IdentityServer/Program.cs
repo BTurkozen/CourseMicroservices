@@ -65,8 +65,10 @@ namespace Course.IdentityServer
                 if (!userManager.Users.Any())
                 {
                     userManager.CreateAsync(new ApplicationUser() { UserName = "Bturk", Email = "Bturk@blabla.com", City = "Ankara" }, "Password_*").Wait();
+
+                    dbContext.SaveChangesAsync().Wait();
                 }
-                
+
                 //if (seed)
                 //{
                 //    Log.Information("Seeding database...");
