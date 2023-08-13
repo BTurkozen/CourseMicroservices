@@ -27,7 +27,7 @@ namespace Course.Web.Services.Concrates
         public async Task<string> GetTokenAsync()
         {
             // Cache içerisinde token varmı onu kontrol etmek amaçlı token'ı çekiyoruz.
-            var currentToken = await _clientAccessTokenCache.GetAsync("WebClientToken");
+            var currentToken = await _clientAccessTokenCache.GetAsync("WebClientToken", null);
 
             // Var olup olmadığını kontrol ediyoruz. Var ise dönderiyoruz.
             if (currentToken is not null)
@@ -61,7 +61,7 @@ namespace Course.Web.Services.Concrates
             }
 
             // Cache service içerisine ekleme işlemi yapıyoruz.
-            await _clientAccessTokenCache.SetAsync("WebClientToken", newToken.AccessToken, newToken.ExpiresIn);
+            await _clientAccessTokenCache.SetAsync("WebClientToken", newToken.AccessToken, newToken.ExpiresIn, null);
 
             return newToken.AccessToken;
         }
