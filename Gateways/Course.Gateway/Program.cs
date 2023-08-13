@@ -1,31 +1,39 @@
-using Microsoft.AspNetCore.Hosting;
+using Course.Gateway.DelegateHandlers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
+using Ocelot.Values;
 
-namespace Course.Gateway
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName.ToLower()}.json").AddEnvironmentVariables();
+
+builder.Services.AddControllers();
+
+builder.Services.AddHttpClient<TokenExchangeDelegateHandler>();
+
+builder.Services.AddAuthentication().AddJwtBearer("GatewayAuthenticationSchema", options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    options.Authority = builder.Configuration["IdentityServerURL"];
+    options.Audience = "resource_gateway";
+    options.RequireHttpsMetadata = true;
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName.ToLower()}.json")
-                          .AddEnvironmentVariables();
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+builder.Services.AddOcelot()
+        .AddDelegatingHandler<TokenExchangeDelegateHandler>();
+
+var app = builder.Build();
+
+app.UseAuthorization();
+
+app.UseDeveloperExceptionPage();
+
+app.MapControllers();
+
+await app.UseOcelot();
+
+app.Run();
+
