@@ -1,39 +1,108 @@
-using Course.Services.Order.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
+﻿using Course.Services.Order.Infrastructure;
+using Course.Shared.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using MediatR;
+using MassTransit;
+using Course.Services.Order.Application.Consumers;
 
-namespace Course.Services.Order.API
+var builder = WebApplication.CreateBuilder(args);
+
+var requeireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+builder.Services.AddControllers(options =>
 {
-    public class Program
+    options.Filters.Add(new AuthorizeFilter(requeireAuthorizePolicy));
+});
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddMassTransit(ms =>
+{
+    // Consumer ekliyoruz.
+    ms.AddConsumer<CreateOrderMessageCommandConsumer>();
+
+    ms.AddConsumer<CourseNameChangeEventConsumer>();
+
+    // Varsayılan Port : 5672
+    // Management Varsayılan portu olarak : 15672
+    ms.UsingRabbitMq((context, cfg) =>
     {
-        public static void Main(string[] args)
+        cfg.Host(builder.Configuration["RabbitMQUrl"], "/", host =>
         {
-            var host = CreateHostBuilder(args).Build();
+            // RabitMq tarfından varsayılan olarak geliyor.
+            host.Username("guest");
+            host.Password("guest");
+        });
 
-            using var scope = host.Services.CreateScope();
+        // Hangi Endpointten dataları alıcağız.
+        cfg.ReceiveEndpoint("create-order-service", e =>
+        {
+            e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+        });
 
-            var serviceProvider = scope.ServiceProvider;
+        cfg.ReceiveEndpoint("course-name-changed-event-order-service", e =>
+        {
+            e.ConfigureConsumer<CourseNameChangeEventConsumer>(context);
+        });
 
-            var orderDbContext = serviceProvider.GetRequiredService<OrderDbContext>();
 
-            orderDbContext.Database.Migrate();
+    });
+});
 
-            host.Run();
-        }
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["IdentityServerURL"];
+    options.Audience = "resource_order";
+    options.RequireHttpsMetadata = true;
+});
+
+builder.Services.AddDbContext<OrderDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), configure =>
+    {
+        configure.MigrationsAssembly("Course.Services.Order.Infrastructure");
+    });
+});
+
+// MediatR ile ilgili handlerları belirtmemiz gerekmektedir.
+// Handler class'ının assembly'si alıyoruz.
+builder.Services.AddMediatR(typeof(Course.Services.Order.Application.Handlers.CreateOrderCommandHandler).Assembly);
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
+var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+
+var serviceProvider = scope.ServiceProvider;
+
+var orderDbContext = serviceProvider.GetRequiredService<OrderDbContext>();
+
+orderDbContext.Database.Migrate();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
