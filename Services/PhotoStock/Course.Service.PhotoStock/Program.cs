@@ -19,7 +19,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     options.Authority = builder.Configuration["IdentityServerURL"];
     options.Audience = "resource_photo_stock";
-    options.RequireHttpsMetadata = true;
+    options.RequireHttpsMetadata = false;
 });
 
 var app = builder.Build();

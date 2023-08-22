@@ -44,7 +44,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     options.Authority = builder.Configuration["IdentityServerURL"];
     options.Audience = "resource_payment";
-    options.RequireHttpsMetadata = true;
+    options.RequireHttpsMetadata = false;
 });
 
 var app = builder.Build();

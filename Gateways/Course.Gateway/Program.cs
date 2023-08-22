@@ -19,7 +19,7 @@ builder.Services.AddAuthentication().AddJwtBearer("GatewayAuthenticationSchema",
 {
     options.Authority = builder.Configuration["IdentityServerURL"];
     options.Audience = "resource_gateway";
-    options.RequireHttpsMetadata = true;
+    options.RequireHttpsMetadata = false;
 });
 
 builder.Services.AddOcelot()

@@ -66,7 +66,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     options.Authority = builder.Configuration["IdentityServerURL"];
     options.Audience = "resource_order";
-    options.RequireHttpsMetadata = true;
+    options.RequireHttpsMetadata = false;
 });
 
 builder.Services.AddDbContext<OrderDbContext>(options =>

@@ -38,7 +38,7 @@ namespace Course.Web.Services.Concrates
             var discovery = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
                 Address = _serviceApiSettings.IdentityBaseUri,
-                Policy = new DiscoveryPolicy { RequireHttps = true }
+                Policy = new DiscoveryPolicy { RequireHttps = false }
             });
 
             if (discovery.IsError)

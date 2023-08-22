@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5021
+          "Port": 5011
         }
       ],
       "UpstreamPathTemplate": "/services/catalog/{everything}",
@@ -19,11 +19,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5022
+          "Port": 5012
         }
       ],
       "UpstreamPathTemplate": "/services/photostock/{everything}",
@@ -36,11 +36,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5023
+          "Port": 5013
         }
       ],
       "UpstreamPathTemplate": "/services/basket/{everything}",
@@ -53,16 +53,16 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5024
+          "Port": 5014
         }
       ],
       "UpstreamPathTemplate": "/services/discount/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "UpstreamSchema": "https",
+      "UpstreamSchema": "http",
       "DelegatingHandlers": [ "TokenExchangeDelegateHandler" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "GatewayAuthenticationSchema"
@@ -87,11 +87,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5026
+          "Port": 5016
         }
       ],
       "UpstreamPathTemplate": "/services/fakepayment/{everything}",

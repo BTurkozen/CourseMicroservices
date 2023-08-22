@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             options.Audience = "resource_catalog";
 
             // Https kullanılmadığı için burada belirtiyoruz.
-            options.RequireHttpsMetadata = true;
+            options.RequireHttpsMetadata = false;
 
         });
 

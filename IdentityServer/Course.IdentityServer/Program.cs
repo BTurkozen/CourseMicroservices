@@ -15,12 +15,13 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Course.IdentityServer
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -64,9 +65,7 @@ namespace Course.IdentityServer
 
                 if (!userManager.Users.Any())
                 {
-                    userManager.CreateAsync(new ApplicationUser() { UserName = "Bturk", Email = "Bturk@blabla.com", City = "Ankara" }, "Password_*").Wait();
-
-                    dbContext.SaveChangesAsync().Wait();
+                    await userManager.CreateAsync(new ApplicationUser() { UserName = "Bturk", Email = "Bturk@blabla.com", City = "Ankara" }, "Password_*12");
                 }
 
                 //if (seed)

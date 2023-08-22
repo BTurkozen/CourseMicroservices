@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 {
                     options.Authority = builder.Configuration["IdentityServerURL"];
                     options.Audience = "resource_basket";
-                    options.RequireHttpsMetadata = true;
+                    options.RequireHttpsMetadata = false;
                 });
 
 builder.Services.AddHttpContextAccessor();

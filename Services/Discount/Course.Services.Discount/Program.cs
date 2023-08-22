@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             options.Authority = builder.Configuration["IdentityServerURL"];
             options.Audience = "resource_discount";
-            options.RequireHttpsMetadata = true;
+            options.RequireHttpsMetadata = false;
         });
 
 var app = builder.Build();
